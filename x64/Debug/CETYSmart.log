@@ -1,3 +1,5 @@
 ﻿  CETYSmart.cpp
-C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(145,33): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(189,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(377,42): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(389,39): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   CETYSmart.vcxproj -> C:\Users\HP\source\repos\tercer_parcial\CETYSmart\x64\Debug\CETYSmart.exe
