@@ -1,0 +1,3 @@
+﻿  CETYSmart.cpp
+C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(145,33): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  CETYSmart.vcxproj -> C:\Users\HP\source\repos\tercer_parcial\CETYSmart\x64\Debug\CETYSmart.exe
