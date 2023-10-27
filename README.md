@@ -1,7 +1,7 @@
 # CETYS-mart
 
 ## NOT compatible with Linux
-As it uses windows.h
+Heavy dependence on windows.h library
 
 ## Description
 A fun school project about buying groceries.
