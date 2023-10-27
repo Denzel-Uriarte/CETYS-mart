@@ -7,13 +7,23 @@
 
 using namespace std;
 
+bool revisarCompraValida(bool compraARevisar) { // Funcion que revisa que la compra sea valida
+    if (compraARevisar < 0 || cin.fail()) {
+        cout << "Terminando compra..." << endl;
+        FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+        cin.clear();
+        return true;
+    }
+    return false;
+}
+
 int main()
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);   // Permitir cambio de color de texto en consola
     srand((unsigned)time(NULL));   // Elegir una raiz aleatoria para las funciones rand()
 
-    float compra = 0, compraTotal = 0, total = 0, presupuesto, descuentoCupon, valorAgregado, cliente = 0, clienteTotal = 0, clienteIndividual = 0, productosCliente;
-    int i = 1, j = 1, k = 1, eleccion, poderRezador, terminar = 1, escape, mentira;
+    float compra, compraTotal, total, presupuesto, descuentoCupon, valorAgregado, cliente = 0, clienteTotal, clienteIndividual, productosCliente;
+    int i = 1, j = 1, k = 1, eleccion, poderRezador, terminar, escape, mentira;
     string scan;
     while (true)
     {
@@ -26,8 +36,11 @@ int main()
         cout << endl;
         SetConsoleTextAttribute(hConsole, 7);   // Regresar el color de la consola a normal
         cout << "Dame tu presupuesto para este carrito (-1 para presupuesto ilimitado)" << endl;
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
         cout << "$";
         cin >> presupuesto;
+        SetConsoleTextAttribute(hConsole, 7);
+        revisarCompraValida(presupuesto);
         cout << endl;
         // Seguir comprando productos mientras el total sea menor que el presupuesto, o si el presupuesto es ilimitado
         while ((compraTotal <= presupuesto) || (presupuesto == -1)) {
@@ -37,12 +50,14 @@ int main()
             cout << "$";
             cin >> compra;
             SetConsoleTextAttribute(hConsole, 7);
-            if (compra == -1) {
-                break;
+            if (revisarCompraValida(compra)) {   // Llamar a funcion que revisa que la compra sea valida
+                break; 
             }
             cout << endl;
+            if ((compra + compraTotal) < presupuesto) {
+                i++;
+            }
             compraTotal = compraTotal + compra;
-            i++;
         }
 
         if (compraTotal >= presupuesto && presupuesto != -1) {   // Si total excede el presupuesto y este no es ilimitado
@@ -60,14 +75,13 @@ int main()
             cout << "6: Aumentar el presupuesto" << endl;
             cout << "(7: correr)" << endl;
             cout << "8: Trabajar" << endl;
-            cout << "9: Mentir" << endl;
+            cout << "9: Negociar" << endl;
             cout << endl;
             cout << "Tu eleccion: ";
             cin >> eleccion;
             cout << endl;
             this_thread::sleep_for(chrono::seconds(1));
             switch (eleccion) {
-
             case 1:   // Pago con credito
                 cout << "Elegiste pagar el extra con creditos." << endl;
                 cout << "El interes sera de ";
@@ -83,7 +97,7 @@ int main()
                     cout << "$";
                     cin >> compra;
                     SetConsoleTextAttribute(hConsole, 7);
-                    if (compra == -1) {
+                    if (revisarCompraValida(compra)) {
                         break;
                     }
                     cout << endl;
@@ -95,7 +109,9 @@ int main()
                 this_thread::sleep_for(chrono::seconds(1));
                 cout << "A ser pagado en efectivo: $" << presupuesto << endl;
                 cout << "A ser pagado en creditos con intereses aplicados: $" << ((compraTotal - presupuesto) * 1.1) << endl;
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                 cout << "Por lo que tu nuevo total por " << i << " productos es de : $" << (presupuesto + ((compraTotal - presupuesto) * 1.1)) << endl;
+                SetConsoleTextAttribute(hConsole, 7);
                 break;
 
             case 2:   // Llamar a un familiar
@@ -110,14 +126,14 @@ int main()
                 if ((compraTotal - 1000) < presupuesto) {
                     cout << "Parece que mama te podra aportar 1000." << endl;
                     cout << endl;
-                    while (true) {
+                    while ((compraTotal <= (presupuesto+1000))) {
                         cout << "Compra " << i << endl;
-                        cout << "Cuanto cuesta esta compra? (-1 para terminar)" << endl;
+                        cout << "Cuanto cuesta esta compra?" << endl;
                         SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
                         cout << "$";
                         cin >> compra;
                         SetConsoleTextAttribute(hConsole, 7);
-                        if (compra == -1) {
+                        if (revisarCompraValida(compra)) {
                             break;
                         }
                         cout << endl;
@@ -140,6 +156,7 @@ int main()
                 this_thread::sleep_for(chrono::seconds(1));
                 cout << "A ser pagado en efectivo: $" << presupuesto << endl;
                 cout << "A ser pagado por mama: $" << (compraTotal - presupuesto) << endl;
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                 cout << "Por lo que tu nuevo total por " << i << " productos es de: $" << compraTotal << endl;
                 break;
 
@@ -160,7 +177,7 @@ int main()
                         cout << "$";
                         cin >> compra;
                         SetConsoleTextAttribute(hConsole, 7);
-                        if (compra == -1) {
+                        if (revisarCompraValida(compra)) {
                             break;
                         }
                         cout << endl;
@@ -174,29 +191,34 @@ int main()
                     this_thread::sleep_for(chrono::seconds(1));
                     cout << "A ser pagado en efectivo: $" << presupuesto << endl;
                     cout << "Dinero bendecido: $" << (compraTotal - presupuesto) << endl;
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                     cout << "Tu total por " << i << " productos queda en: $" << presupuesto << endl;
+                    SetConsoleTextAttribute(hConsole, 7);
                 }
                 else {   // No ganar presupuesto ilimitado
                     SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
                     cout << "Parece que no tienes el favor de los dioses hoy." << endl;
                     SetConsoleTextAttribute(hConsole, 7);
                     cout << "No podras pagar por el ultimo producto escaneado y terminara tu compra." << endl;
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                     cout << "Tu total queda en: " << (compraTotal - compra) << endl;
+                    SetConsoleTextAttribute(hConsole, 7);
                 }
                 break;
 
             case 4:   // Usar un cupon viejo
                 descuentoCupon = 50 + (rand() % 49);   // Determinar el descuento que aplicara el cupon
                 compraTotal = compraTotal * (1 - (descuentoCupon / 100));   // Aplicar el descuento
-
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                 cout << "A ver si este cupon te ayuda..." << endl;
                 this_thread::sleep_for(chrono::seconds(2));
                 SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
                 cout << "Es valido!" << endl;
-                SetConsoleTextAttribute(hConsole, 7);
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                 cout << "Este cupon aplica un descuento de " << descuentoCupon << "%!" << endl;
                 cout << "El total de tu compra ahora es de: $" << compraTotal << endl;
                 cout << "Este descuento tambien aplicara a todas las compras que te faltan, asi que puedes realizarlas" << endl;
+                SetConsoleTextAttribute(hConsole, 7);
                 cout << endl;
                 while ((compraTotal <= presupuesto) || (presupuesto == -1)) {
                     cout << "Compra " << i << endl;
@@ -205,7 +227,7 @@ int main()
                     cout << "$";
                     cin >> compra;
                     SetConsoleTextAttribute(hConsole, 7);
-                    if (compra == -1) {
+                    if (revisarCompraValida(compra)) {
                         break;
                     }
                     cout << endl;
@@ -219,7 +241,9 @@ int main()
                 this_thread::sleep_for(chrono::seconds(1));
                 cout << "Utilizando tu cupon de " << descuentoCupon << "% de descuento" << endl;
                 cout << "Haz ahorrado: $" << ((compraTotal / (1 - (descuentoCupon / 100))) - compraTotal) << endl;
-                cout << "Tu total por " << i << " productos siendo: $" << compraTotal << endl;
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
+                cout << "Tu total por " << i << " productos es de: $" << compraTotal << endl;
+                SetConsoleTextAttribute(hConsole, 7);
                 break;
 
             case 5:   // No pagar lo restante
@@ -227,11 +251,14 @@ int main()
                 cout << "Parece que no podras cubrir el precio del producto " << (i - 1) << "." << endl;
                 SetConsoleTextAttribute(hConsole, 7);
                 cout << "Por lo que no se contara, y terminaras la compra." << endl;
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                 cout << "Tu total por " << i << " productos es de : $" << (compraTotal - compra);
+                SetConsoleTextAttribute(hConsole, 7);
                 break;
 
             case 6:   // Aumentar el presupuesto
                 while (terminar == 1) {
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                     cout << "Aumentaras tu presupuesto, espero traigas el dinero necesario." << endl;
                     cout << "Cuanto dinero quieres agregar a este?" << endl;
                     SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
@@ -255,7 +282,7 @@ int main()
                         cout << "Cuanto cuesta esta compra? " << endl;
                         cout << "$";
                         cin >> compra;
-                        if (compra == -1) {
+                        if (revisarCompraValida(compra)) {
                             break;
                         }
                         cout << endl;
@@ -264,7 +291,9 @@ int main()
                     }
                     cout << endl;
                     // Repetir seccion a discrecion del usuario
+                    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                     cout << "Parece que ya alcanzaste tu nuevo presupuesto, quieres agregar mas o terminar tu compra?" << endl;
+                    SetConsoleTextAttribute(hConsole, 7);
                     cout << "(0: terminar, 1: agregar mas)" << endl;
                     cin >> terminar;
                     if (terminar != 0 && terminar != 1) {
@@ -275,7 +304,9 @@ int main()
                     cout << endl;
                 }
                 cout << "Terminas tu compra." << endl;
+                SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
                 cout << "Tu total por " << i << " productos es de : $" << compraTotal;
+                SetConsoleTextAttribute(hConsole, 7);
                 break;
 
             case 7:   // huir
@@ -289,11 +320,11 @@ int main()
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
                 cout << "Escuchas a la sirena de la policia!";
                 SetConsoleTextAttribute(hConsole, 7);
-                cout << ", ecides escaparte por : " << endl;
-                cout << "(1: La puerta principal)" << endl;
-                cout << "(2: La puerta de atras)" << endl;
-                cout << "(3: Una ventana)" << endl;
-                cout << "(4: Dejar que te atrapen)" << endl;
+                cout << ", decides escaparte por : " << endl;
+                cout << "1: La puerta principal" << endl;
+                cout << "2: La puerta de atras" << endl;
+                cout << "3: Una ventana" << endl;
+                cout << "4: Dejar que te atrapen" << endl;
                 cin >> escape;
                 cout << endl;
                 switch (escape) {
@@ -426,8 +457,8 @@ int main()
                     j++;
                 }
                 break;
-            case 9:   // Hechar una mentirota
-                cout << "(Decides mentir acerca de:)" << endl;
+            case 9:   // Negociar
+                cout << "(Puedes decir:)" << endl;
                 cout << "(1: Hoy cumplo)" << endl;
                 //cout << "(2: Mi abuelita tiene cancer)" << endl;
                 //cout << "(3: Tu abuelita tiene cancer)" << endl;
@@ -436,7 +467,7 @@ int main()
                 //cout << "(6: Vengo del futuro)" << endl;
                 //cout << "(7: Soy el hijo de dios)" << endl;
                 cout << endl;
-                cout << "Tu mentira: ";
+                cout << "Dices: ";
                 cin >> mentira;
                 cout << endl;
                 switch (mentira) {
@@ -444,7 +475,7 @@ int main()
                     cout << "Asi que hoy cumples..." << endl;
                     cout << "Felices cumples pero aun ocupas pagar $" << (compraTotal - presupuesto) << endl;
                     SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-                    cout << "Parece que no podras cubrir el precio del producto " << (i - 1) << "." << endl;
+                    cout << "Parece que no podras cubrir el precio del producto " << (i) << "." << endl;
                     SetConsoleTextAttribute(hConsole, 7);
                     cout << "Por lo que no se contara, y terminaras la compra." << endl;
                     cout << "Tu total por " << i << " productos es de : $" << (compraTotal - compra);
@@ -478,10 +509,10 @@ int main()
             cout << "El total de tu compra es de: $" << compraTotal << endl;
         }
         cout << endl;
+        SetConsoleTextAttribute(hConsole, 7);
         cout << "Deseas volver a CETYS-mart? (1: Si, 2: No)" << endl;
         cin >> eleccion;
         if (eleccion == 1) {
-
             system("cls");
         }
         else {

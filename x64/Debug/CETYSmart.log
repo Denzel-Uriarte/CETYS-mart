@@ -1,5 +1,6 @@
 ﻿  CETYSmart.cpp
-C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(189,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(377,42): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(389,39): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(11,9): warning C4804: '<': unsafe use of type 'bool' in operation
+C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(210,37): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(407,42): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\HP\source\repos\tercer_parcial\CETYSmart\CETYSmart.cpp(419,39): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   CETYSmart.vcxproj -> C:\Users\HP\source\repos\tercer_parcial\CETYSmart\x64\Debug\CETYSmart.exe
