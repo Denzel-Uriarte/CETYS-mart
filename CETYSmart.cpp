@@ -252,7 +252,7 @@ int main()
                 SetConsoleTextAttribute(hConsole, 7);
                 cout << "Por lo que no se contara, y terminaras la compra." << endl;
                 SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN);
-                cout << "Tu total por " << i << " productos es de : $" << (compraTotal - compra);
+                cout << "Tu total por " << (i-1) << " productos es de : $" << (compraTotal - compra);
                 SetConsoleTextAttribute(hConsole, 7);
                 break;
 
